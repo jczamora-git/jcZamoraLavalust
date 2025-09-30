@@ -12,9 +12,11 @@ RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/Allo
 # Copy app files
 COPY . /var/www/html/
 
-# Fix permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
+# Create necessary directories and fix permissions
+RUN mkdir -p /tmp/sessions /tmp/logs /tmp/cache /var/www/html/runtime/logs /var/www/html/runtime/cache \
+    && chown -R www-data:www-data /var/www/html /tmp/sessions /tmp/logs /tmp/cache \
+    && chmod -R 755 /var/www/html \
+    && chmod -R 777 /tmp/sessions /tmp/logs /tmp/cache /var/www/html/runtime
 
 EXPOSE 80
 

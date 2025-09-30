@@ -106,7 +106,7 @@ $config['index_page']               = '';
 |
 */
 $config['log_threshold']            = 0;
-$config['log_dir']                  = 'runtime/logs/';
+$config['log_dir']                  = '/tmp/logs/';
 
 /*
 |--------------------------------------------------------------------------
@@ -212,7 +212,7 @@ $config['language'] 				= 'en-US';
 $config['sess_driver']             = 'file';
 $config['sess_cookie_name']        = 'LLSession';
 $config['sess_expiration']         = 7200;
-$config['sess_save_path']          = '';
+$config['sess_save_path']          = '/tmp/sessions';
 $config['sess_match_ip']           = TRUE;
 $config['sess_match_fingerprint']  = TRUE;
 $config['sess_time_to_update']     = 300;
@@ -249,7 +249,7 @@ $config['cookie_samesite']         = 'Lax';
 |
 |--------------------------------------------------------------------------
 */
-$config['cache_dir']               = 'runtime/cache/';
+$config['cache_dir']               = '/tmp/cache/';
 $config['cache_default_expires']   = 0;
 
 /*
