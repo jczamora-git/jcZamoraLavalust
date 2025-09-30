@@ -6,6 +6,9 @@ runtime/*
 !runtime/.htaccess
 !runtime/index.html
 
+# Environment Variables
+.env
+
 # IDE Files
 #-------------------------
 /nbproject/

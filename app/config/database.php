@@ -59,11 +59,11 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
 $database['main'] = array(
     'driver'	=> 'mysql',
-    'hostname'	=> 'localhost',
-    'port'		=> '3306',
-    'username'	=> 'root',
-    'password'	=> 'admin',
-    'database'	=> 'students_db',
+    'hostname'	=> env('DB_HOSTNAME'),
+    'port'		=> env('DB_PORT'),
+    'username'	=> env('DB_USERNAME'),
+    'password'	=> env('DB_PASSWORD'),
+    'database'	=> env('DB_DATABASE'),
     'charset'	=> 'utf8mb4',
     'dbprefix'	=> '',
     // Optional for SQLite
