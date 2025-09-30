@@ -9,10 +9,16 @@ runtime/*
 # Environment Variables
 .env
 
+# Logs and Cache
+*.log
+runtime/logs/*
+runtime/cache/*
+
 # IDE Files
 #-------------------------
 /nbproject/
 .idea/*
+.vscode/
 
 ## Sublime Text cache files
 *.tmlanguage.cache
@@ -20,3 +26,7 @@ runtime/*
 *.stTheme.cache
 *.sublime-workspace
 *.sublime-project
+
+# OS Files
+Thumbs.db
+.DS_Store

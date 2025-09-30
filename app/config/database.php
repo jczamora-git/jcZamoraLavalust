@@ -31,15 +31,32 @@ if (!function_exists('load_env')) {
 
 if (!function_exists('env')) {
     function env($key, $default = null) {
-        return isset($_ENV[$key]) ? $_ENV[$key] : $default;
+        // First check $_ENV (from .env file)
+        if (isset($_ENV[$key])) {
+            return $_ENV[$key];
+        }
+        // Then check system environment variables
+        $value = getenv($key);
+        if ($value !== false) {
+            return $value;
+        }
+        // Return default if not found
+        return $default;
     }
 }
 
 // Load environment variables
-if (defined('ROOT_DIR')) {
-    load_env(ROOT_DIR . '.env');
-} else {
-    load_env(__DIR__ . '/../../.env');
+$env_paths = [
+    __DIR__ . '/../../.env',
+    '/var/www/html/.env',
+    getcwd() . '/.env'
+];
+
+foreach ($env_paths as $env_path) {
+    if (file_exists($env_path)) {
+        load_env($env_path);
+        break;
+    }
 }
 
 /**
