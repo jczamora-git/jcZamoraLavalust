@@ -52,6 +52,8 @@ $router->get('auth/logout', 'StudentsController::logout');
 $router->get('/', 'StudentsController::home');
 $router->get('dashboard', 'StudentsController::dashboard');
 $router->get('students', 'StudentsController::pagination_test');
+$router->get('students/archived', 'StudentsController::archived');
+$router->get('students/restore/{id}', 'StudentsController::restore');
 $router->match('students/add', 'StudentsController::add' , ['GET','POST']);
 $router->get('students/display/{id}', 'StudentsController::display');
 $router->match('students/edit/{id}', 'StudentsController::edit', ['GET','POST']);

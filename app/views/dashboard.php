@@ -17,11 +17,11 @@
             <div class="stats-container">
                 <div class="stat-card">
                     <div class="stat-title">TOTAL STUDENTS</div>
-                    <div class="stat-value"><?php echo isset($total_students) ? $total_students : 0; ?> Students</div>
+                    <div class="stat-value"><?php echo isset($total_students) ? $total_students : 0; ?> <?php echo (isset($total_students) && $total_students == 1) ? 'Student' : 'Students'; ?></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-title">NEW STUDENTS</div>
-                    <div class="stat-value"><?php echo isset($new_students_count) ? $new_students_count : 0; ?> Students</div>
+                    <div class="stat-value"><?php echo isset($new_students_count) ? $new_students_count : 0; ?> <?php echo (isset($new_students_count) && $new_students_count == 1) ? 'Student' : 'Students'; ?></div>
                 </div>
             </div>
 

@@ -222,20 +222,21 @@ class StudentsController extends Controller {
         $data['students'] = $result['records'];
         $total_rows = $result['total_rows'];
         
-        // Configure pagination
+        // Configure pagination - icon only navigation
         $this->pagination->set_options([
-            'first_link'     => '⏮ First',
-            'last_link'      => 'Last ⏭',
-            'next_link'      => 'Next →',
-            'prev_link'      => '← Prev',
+            'first_link'     => '«',
+            'last_link'      => '»',
+            'next_link'      => '›',
+            'prev_link'      => '‹',
             'page_delimiter' => '&page='
         ]);
         
-        // Set the theme and initialize
+        // Set the theme and initialize with 3 visible page numbers
         $this->pagination->set_theme('bootstrap');
-        $base_url = site_url('students/');  // Using the route we've confirmed exists
+        $base_url = site_url('students/');
         $url_params = "?search=$search&show=$records_per_page";
-        $this->pagination->initialize($total_rows, $records_per_page, $page, $base_url.$url_params);
+        // The 5th parameter (3) limits the number of page links shown
+        $this->pagination->initialize($total_rows, $records_per_page, $page, $base_url.$url_params, 3);
         
         // Generate pagination links
         $data['pagination'] = $this->pagination->paginate();
@@ -332,5 +333,82 @@ class StudentsController extends Controller {
     public function logout() {
         $this->auth->logout();
         redirect('auth/login');
+    }
+
+    public function archived() {
+        $this->check_auth();
+        
+        // Get the current page number
+        $page = 1;
+        if(isset($_GET['page']) && !empty($_GET['page'])) {
+            $page = (int)$this->io->get('page');
+        }
+        
+        // Get search query if any
+        $search = '';
+        if(isset($_GET['search']) && !empty($_GET['search'])) {
+            $search = trim($this->io->get('search'));
+        }
+        
+        // Set records per page
+        $records_per_page = 10;
+        if(isset($_GET['show']) && !empty($_GET['show'])) {
+            $records_per_page = (int) $this->io->get('show');
+        }
+        
+        // Get archived students with pagination
+        $result = $this->StudentsModel->getArchivedStudentsWithPagination($search, $records_per_page, $page);
+        $data['students'] = $result['records'];
+        $total_rows = $result['total_rows'];
+        
+        // Configure pagination - icon only navigation
+        $this->pagination->set_options([
+            'first_link'     => '«',
+            'last_link'      => '»',
+            'next_link'      => '›',
+            'prev_link'      => '‹',
+            'page_delimiter' => '&page='
+        ]);
+        
+        // Set the theme and initialize with 3 visible page numbers
+        $this->pagination->set_theme('bootstrap');
+        $base_url = site_url('students/archived/');
+        $url_params = "?search=$search&show=$records_per_page";
+        $this->pagination->initialize($total_rows, $records_per_page, $page, $base_url.$url_params, 3);
+        
+        // Generate pagination links
+        $data['pagination'] = $this->pagination->paginate();
+        
+        // Pass additional data to the view
+        $data['search'] = $search;
+        $data['records_per_page'] = $records_per_page;
+        $data['total_rows'] = $total_rows;
+        $data['current_page'] = $page;
+        $data['showing_start'] = ($page - 1) * $records_per_page + 1;
+        if($total_rows == 0) {
+            $data['showing_start'] = 0;
+        }
+        $data['showing_end'] = min($page * $records_per_page, $total_rows);
+        
+        $this->call->view('archived_students', $data);
+    }
+
+    public function restore($id) {
+        $this->check_auth();
+        $this->check_admin();
+        
+        if ($this->StudentsModel->restore($id)) {
+            set_flash_alert('success', 'Student was restored successfully!');
+        } else {
+            set_flash_alert('danger', 'Failed to restore student.');
+        }
+        redirect('students/archived');
+    }
+
+    public function check_admin() {
+        if (!$this->auth->has_role('admin')) {
+            set_flash_alert('danger', 'Access denied. Admin privileges required.');
+            redirect('dashboard');
+        }
     }
 }

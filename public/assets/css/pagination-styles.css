@@ -1,20 +1,28 @@
-/* Enhanced Pagination Styles */
+/* Modern Pagination Styles */
 .pagination-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 28px;
-    padding: 20px;
-    background-color: var(--dark-secondary);
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.8) 0%, rgba(13, 13, 13, 0.9) 100%);
+    border-radius: 16px;
+    border: 1px solid rgba(74, 255, 136, 0.15);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(74, 255, 136, 0.05);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
 }
 
 .pagination-info {
-    color: var(--text-gray);
-    margin-bottom: 16px;
-    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+.pagination-info strong {
+    color: var(--neon-green);
+    font-weight: 700;
 }
 
 .pagination-controls {
@@ -29,7 +37,9 @@
     display: flex;
     list-style: none;
     padding: 0;
-    gap: 5px;
+    margin: 0;
+    gap: 6px;
+    align-items: center;
 }
 
 .pagination li {
@@ -38,47 +48,118 @@
 
 .pagination li a, 
 .pagination li span {
-    color: var(--text-gray);
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 10px 16px;
+    color: rgba(255, 255, 255, 0.7);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border: 1px solid rgba(74, 255, 136, 0.2);
+    border-radius: 10px;
+    padding: 0 !important;
+    margin: 0 !important;
     text-decoration: none;
-    transition: all 0.2s ease;
-    display: inline-block;
-    min-width: 44px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    max-width: 44px !important;
+    max-height: 44px !important;
     text-align: center;
-    font-size: 0.95rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    line-height: 1;
+    box-sizing: border-box;
 }
 
-.pagination li.active a, 
-.pagination li.active span {
-    background-color: var(--neon-green);
-    color: var(--dark-bg);
-    border-color: var(--neon-green);
-    font-weight: 500;
-    position: relative;
-    box-shadow: 0 0 12px rgba(74, 255, 136, 0.3);
+/* Hover glow effect */
+.pagination li a::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(74, 255, 136, 0.3) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+    pointer-events: none;
+}
+
+.pagination li a:hover::before {
+    width: 100px;
+    height: 100px;
 }
 
 .pagination li a:hover:not(.active) {
-    background-color: rgba(74, 255, 136, 0.1);
+    background: linear-gradient(135deg, rgba(74, 255, 136, 0.15) 0%, rgba(74, 255, 136, 0.08) 100%);
     color: var(--neon-green);
-    transform: translateY(-2px);
+    border-color: var(--neon-green);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(74, 255, 136, 0.2);
 }
 
 .pagination li.disabled a,
 .pagination li.disabled span {
-    opacity: 0.5;
+    opacity: 0.3;
     pointer-events: none;
-    cursor: default;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.02);
+    border-color: rgba(74, 255, 136, 0.1);
 }
 
-/* First and Last Page buttons */
-.pagination li:first-child a,
-.pagination li:last-child a {
-    padding: 10px 12px;
-    font-weight: 500;
+/* Navigation buttons (First, Prev, Next, Last) - NOT active pages */
+.pagination li:first-child a:not(.active),
+.pagination li:last-child a:not(.active),
+.pagination li:nth-child(2) a:not(.active),
+.pagination li:nth-last-child(2) a:not(.active) {
+    background: linear-gradient(135deg, rgba(74, 255, 136, 0.1) 0%, rgba(74, 255, 136, 0.05) 100%);
+    border-color: rgba(74, 255, 136, 0.3);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+/* Active/Current page highlighting - MUST BE LAST for highest specificity */
+.pagination a.page-link.active,
+.pagination li a.page-link.active,
+.pagination-list a.page-link.active,
+a.page-link.active {
+    background: linear-gradient(135deg, #4AFF88 0%, #3de673 100%) !important;
+    color: #0d0d0d !important;
+    border-color: #4AFF88 !important;
+    font-weight: 700 !important;
+    box-shadow: 0 0 20px rgba(74, 255, 136, 0.5), 0 4px 12px rgba(74, 255, 136, 0.3) !important;
+    transform: scale(1.05) !important;
+    cursor: default !important;
+}
+
+/* Disable pointer events and hover on active */
+.pagination a.page-link.active,
+.pagination li a.page-link.active {
+    pointer-events: none !important;
+}
+
+/* Ensure active page link doesn't trigger hover effect */
+.pagination a.page-link.active::before,
+.pagination li a.page-link.active::before,
+a.page-link.active::before {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* SUPER SPECIFIC - Just .active class for maximum compatibility */
+.pagination .active {
+    background: linear-gradient(135deg, #4AFF88 0%, #3de673 100%) !important;
+    color: #0d0d0d !important;
+    border-color: #4AFF88 !important;
+    font-weight: 800 !important;
+    box-shadow: 0 0 25px rgba(74, 255, 136, 0.6), 0 5px 15px rgba(74, 255, 136, 0.4) !important;
+    transform: scale(1.1) !important;
 }
 
 /* Responsive styles */
@@ -89,9 +170,13 @@
     
     .pagination li a, 
     .pagination li span {
-        padding: 8px 12px;
-        min-width: 36px;
-        font-size: 0.85rem;
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        min-height: 36px !important;
+        max-width: 36px !important;
+        max-height: 36px !important;
+        font-size: 0.9rem;
     }
     
     .pagination {
